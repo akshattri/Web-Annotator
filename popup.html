@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&family=Pacifico&display=swap" rel="stylesheet">
+</head>
+<body>
+  <h1 class="stylish-heading">Web Annotator</h1>
+  <div class="container">
+    <div class="row">
+      <label for="color">Highlight Color:</label>
+      <input type="color" id="color" name="color" value="#ffff00">
+    </div>
+    <div class="row">
+      <button id="save">Save</button>
+      <button id="exportJson">Export JSON</button>
+      <button id="exportPdf">Export PDF</button>
+    </div>
+    <div class="row">
+      <input type="text" id="searchInput" placeholder="Search notes...">
+      <button id="search">Search</button>
+    </div>
+    <div class="row">
+      <label for="startDate">Start Date:</label>
+      <input type="date" id="startDate">
+      <label for="endDate">End Date:</label>
+      <input type="date" id="endDate">
+      <button id="filterByDate">Filter by Date</button>
+    </div>
+    <div id="annotations"></div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
