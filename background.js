@@ -1,11 +1,10 @@
-// Listens for commands defined in the manifest (like keyboard shortcuts)
+
 chrome.commands.onCommand.addListener(function (command) {
   if (command === 'highlight') {
     highlightSelectedText();
   }
 });
 
-// Function to highlight selected text by injecting a content script into the active tab
 function highlightSelectedText() {
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     chrome.scripting.executeScript({
@@ -15,7 +14,6 @@ function highlightSelectedText() {
   });
 }
 
-// The function to be injected into the content script to highlight selected text
 function highlightText() {
   const selectedText = window.getSelection().toString();
   if (selectedText.length > 0) {
@@ -32,7 +30,6 @@ function highlightText() {
   }
 }
 
-// Function to save the annotation (can be reused in content script as well)
 function saveAnnotation(url, highlight, note) {
   const date = new Date().toISOString();
   chrome.storage.sync.get([url], function (result) {
