@@ -63,14 +63,13 @@ function displayAnnotations(annotations, allAnnotations) {
     node.classList.remove('blink');
   });
 
-  // Apply blinking effect to filtered annotations
+  // Blinking effect on searched highlight
   annotations.forEach(annotation => {
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = annotation.highlight;
     const span = tempDiv.firstChild;
 
     if (span) {
-      // Find the corresponding annotation on the page
       const originalSpan = Array.from(document.querySelectorAll('.highlighted-text')).find(node => node.outerHTML === span.outerHTML);
 
       if (originalSpan) {
@@ -84,14 +83,12 @@ function displayAnnotations(annotations, allAnnotations) {
     }
   });
 
-  // Ensure the blinking effect is removed after a while
   setTimeout(() => {
     document.querySelectorAll('.highlighted-text').forEach(node => {
       node.classList.remove('blink');
     });
-  }, 3000); // Duration of the blinking effect
+  }, 3000); 
 
-  // Generate annotation list at the bottom of the page
   generateAnnotationList(allAnnotations);
 }
 
@@ -117,11 +114,9 @@ function updateHighlightColor(color) {
 }
 
 function generateAnnotationList(annotations) {
-  // Remove existing annotation list
   const existingList = document.getElementById('annotation-list');
   if (existingList) existingList.remove();
 
-  // Create new annotation list
   const annotationList = document.createElement('div');
   annotationList.id = 'annotation-list';
   annotationList.style.borderTop = '1px solid #000';
@@ -163,7 +158,6 @@ function generatePrintView() {
     });
     document.body.appendChild(annotationList);
 
-    // Apply print-specific styles to ensure highlights are visible
     const printStyle = document.createElement('style');
     printStyle.id = 'printStyle';
     printStyle.textContent = `
@@ -179,10 +173,8 @@ function generatePrintView() {
     `;
     document.head.appendChild(printStyle);
 
-    // Open print dialog
     window.print();
 
-    // Remove the annotation list and print style after printing
     document.body.removeChild(annotationList);
     document.head.removeChild(printStyle);
   });
@@ -218,7 +210,6 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Listen for messages from the popup script
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   console.log('Message received:', request);
   if (request.action === 'searchAnnotations') {
@@ -230,7 +221,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   } else if (request.action === 'generatePrintView') {
     generatePrintView();
   }
-  return true; // Indicates asynchronous response
+  return true; 
 });
 
 function handleSearchAnnotations(query, sendResponse) {
