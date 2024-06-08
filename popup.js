@@ -1,11 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // Retrieve and set the saved highlight color
   chrome.storage.sync.get('highlightColor', function(data) {
     const colorInput = document.getElementById('color');
     colorInput.value = data.highlightColor || '#ffff00'; // Default to yellow if no color is set
   });
 
-  // Save the selected color and notify content script
   document.getElementById('save').addEventListener('click', function() {
     const color = document.getElementById('color').value;
     chrome.storage.sync.set({ highlightColor: color }, function() {
@@ -16,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Export annotations as JSON
   document.getElementById('exportJson').addEventListener('click', function() {
     chrome.storage.sync.get(null, function(result) {
       const data = JSON.stringify(result, null, 2);
@@ -29,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Search annotations
   document.getElementById('search').addEventListener('click', function() {
     const query = document.getElementById('searchInput').value.toLowerCase();
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
@@ -37,7 +33,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Filter annotations by date
   document.getElementById('filterByDate').addEventListener('click', function() {
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
@@ -46,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Export annotations and page as PDF
   document.getElementById('exportPdf').addEventListener('click', function() {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
       chrome.tabs.sendMessage(tabs[0].id, { action: 'generatePrintView' });
