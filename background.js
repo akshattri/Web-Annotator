@@ -1,8 +1,5 @@
-
-chrome.commands.onCommand.addListener(function (command) {
-  if (command === 'highlight') {
-    highlightSelectedText();
-  }
+chrome.runtime.onInstalled.addListener(function() {
+  console.log("Web Annotator extension installed.");
 });
 
 function highlightSelectedText() {
@@ -37,4 +34,28 @@ function saveAnnotation(url, highlight, note) {
     annotations.push({ highlight, note, date });
     chrome.storage.sync.set({ [url]: annotations });
   });
+}
+
+chrome.commands.onCommand.addListener(function(command) {
+  if (command === "highlight-text") {
+    highlightSelectedText();
+  } else if (command === "search-annotations") {
+    searchAnnotations();
+  }
+});
+
+function searchAnnotations() {
+  chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+    chrome.scripting.executeScript({
+      target: { tabId: tabs[0].id },
+      function: promptSearchAnnotations
+    });
+  });
+}
+
+function promptSearchAnnotations() {
+  const query = prompt('Enter the text to search in annotations:');
+  if (query !== null) {
+    chrome.runtime.sendMessage({ action: 'searchAnnotations', query: query });
+  }
 }
