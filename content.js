@@ -58,12 +58,10 @@ function saveAnnotation(url, highlight, note) {
 function displayAnnotations(annotations, allAnnotations) {
   console.log('Displaying annotations:', annotations);
 
-  // Clear blinking effect from all annotations
   document.querySelectorAll('.highlighted-text').forEach(node => {
     node.classList.remove('blink');
   });
 
-  // Blinking effect on searched highlight
   annotations.forEach(annotation => {
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = annotation.highlight;
@@ -87,7 +85,7 @@ function displayAnnotations(annotations, allAnnotations) {
     document.querySelectorAll('.highlighted-text').forEach(node => {
       node.classList.remove('blink');
     });
-  }, 3000); 
+  }, 3000);
 
   generateAnnotationList(allAnnotations);
 }
@@ -163,11 +161,11 @@ function generatePrintView() {
     printStyle.textContent = `
       @media print {
         .highlighted-text {
-          -webkit-print-color-adjust: exact; /* Ensure color adjustments in webkit-based browsers */
+          -webkit-print-color-adjust: exact;
         }
         #annotationList {
           display: block;
-          page-break-before: always; /* Start annotations on a new page */
+          page-break-before: always;
         }
       }
     `;
@@ -233,7 +231,15 @@ function handleSearchAnnotations(query, sendResponse) {
       return;
     }
     const annotations = result[url] || [];
-    const filtered = query.trim() === '' ? annotations : annotations.filter(annotation => annotation.note.toLowerCase().includes(query.toLowerCase()));
+    const filtered = query.trim() === '' ? annotations : annotations.filter(annotation => {
+      const lowerQuery = query.toLowerCase();
+      return annotation.note.toLowerCase().includes(lowerQuery) || annotation.highlight.toLowerCase().includes(lowerQuery);
+    });
+
+    if (filtered.length === 0) {
+      alert('No annotations found for the given search query. There might be a spelling error, please recheck.');
+    }
+
     displayAnnotations(filtered, annotations);
     sendResponse({ success: true, annotations: filtered });
   });
@@ -248,12 +254,24 @@ function handleFilterByDate(startDate, endDate, sendResponse) {
       return;
     }
     const annotations = result[url] || [];
+    console.log(`Filtering annotations between ${startDate} and ${endDate}`);
+    
+    const start = new Date(startDate);
+    start.setHours(0, 0, 0, 0);
+    const end = new Date(endDate);
+    end.setHours(23, 59, 59, 999);
+    
     const filtered = (!startDate && !endDate) ? annotations : annotations.filter(annotation => {
       const annotationDate = new Date(annotation.date);
-      return annotationDate >= new Date(startDate) && annotationDate <= new Date(endDate);
+      console.log(`Annotation date: ${annotationDate}, Start date: ${start}, End date: ${end}`);
+      return annotationDate >= start && annotationDate <= end;
     });
+    
+    if (filtered.length === 0) {
+      alert('No annotations found within the specified date range.');
+    }
+
     displayAnnotations(filtered, annotations);
     sendResponse({ success: true, annotations: filtered });
   });
 }
-
