@@ -9,12 +9,13 @@ This is a basic implementation of a chrome extension for annotation and making n
 
 - **Highlight Text:** Seamlessly highlight any text on a web page.
 - **Add Notes:** Attach personalized notes to your highlighted text.
-- **Filter Highlights by Note:** Easily search and filter highlighted text based on the notes you’ve added.
+- **Filter Highlights by Note:** Easily search and filter highlighted text based on the notes you’ve added or the text you have highlighted.
 - **Time-Based Filtering:** Organize and filter highlighted text according to the date and time it was highlighted.
 - **Export Highlights:**
   - **JSON Export:** Download all your highlighted text and notes in a structured JSON file.
   - **PDF Export:** Generate a comprehensive PDF of the web page, including highlighted text and corresponding notes compiled at the end.
 - **Customizable Highlight Colors:** Choose and change the highlight color to suit your preferences.
+- **Persistence:** The annotations of the highlighted text and the note attached to it stay at the url even after closing the tab, when we export json or export pdf after reopening the tabs, the earlier annotations can be seen there.
 ## Installation
 
 1. Clone the repository using `git clone <repository-url>`
