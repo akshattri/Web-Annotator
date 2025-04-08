@@ -39,4 +39,4 @@ This is a basic implementation of a chrome extension for annotation and making n
 ## Contact
 
 - Author: Akshat
-- Email: akshat@iitr.ac.in
+- Email: akshat@ee.iitr.ac.in
